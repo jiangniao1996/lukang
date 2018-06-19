@@ -2225,12 +2225,25 @@ class GoodsController extends Controller{
 	    
 	}
 	
+	/**
+	 * 赞助商列表
+	 * 
+	 */
 	function business_list(){
 	    
-	    $sql = "SELECT tb1.business_name, tb2.gift_id, tb2.gift_name FROM {$this->App->fixpre()}gift";
+	    $sql  = "SELECT DISTINCT tb1.business_name, tb1.business_id, tb2.gift_id, tb2.gift_name, tb2.gift_incept";
+	    $sql .= " FROM {$this->App->prefix()}business AS tb1 INNER JOIN {$this->App->prefix()}gift AS tb2 ON";
+	    $sql .= " tb1.business_id = tb2.business_id";
+	    
 	    $businesslist = $this->App->find($sql);
+        
+	    
+	    echo "<pre>";
+	    var_dump($businesslist);
 	    
 	    
+	    
+	    $this->set('businesslist',$businesslist);
 	    $this->template('business_list');
 	}
 	
