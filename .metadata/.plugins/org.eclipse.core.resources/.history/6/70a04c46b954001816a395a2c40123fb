@@ -1,0 +1,26 @@
+<?php 
+
+namespace QCloud_WeApp_SDK\GetSubjects;
+
+use QCloud_WeApp_SDK\Mysql\Mysql as DB;
+
+class GetSubjects {
+    
+    public static function GetSubjectList($num){
+        
+        $subjectList = DB::select('knowledge', ['*'], "knowledge_id > 1", "", "order by rand() limit $num");
+        //$question = DB::select('knowledge', ['*'], "knowledge_id > 1");
+        
+        return $subjectList;
+
+    
+    }
+    
+    
+    
+}
+
+
+
+
+?>

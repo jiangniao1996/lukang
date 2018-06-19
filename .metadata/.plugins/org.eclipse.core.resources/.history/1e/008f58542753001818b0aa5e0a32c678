@@ -1,0 +1,65 @@
+<?php 
+
+namespace QCloud_WeApp_SDK\SetUserReceivedGifts;
+
+use QCloud_WeApp_SDK\Mysql\Mysql as DB;
+
+class SetUserReceivedGifts{
+    
+    public static function set_GiftInfo($open_id,$giftNum,$giftids){
+        
+        //查找出user_id
+        $user_id = DB::row('user',['user_id'],['open_id' => $open_id])->user_id;
+        
+        //计算出用户欲领取的礼物的礼物币数
+        $sum = 0;
+        for( $i=0; $i<=count($giftids)-1; $i++ ){
+            
+           $result = DB::row('gift',['gift_coin'],["gift_id" => $giftids[$i]])->gift_coin;
+           $sum += $result;
+        }
+        
+        //查找并计算出用户可用的礼物币数
+        $gift_coin = DB::row('record',['gift_coin'],["user_id" => $user_id])->gift_coin;
+        $received_gift_coin = DB::row('record',['received_gift_coin'],["user_id" => $user_id])->received_gift_coin;
+        
+        $have_gift_coin = $gift_coin - $received_gift_coin;
+        
+        //做判断，如果可用的礼物币数大于或等于用户欲领取的礼物的礼物币数，则进行下一步操作
+        if( $have_gift_coin >= $sum ){
+            
+            $sql = "";
+            
+            //将欲领取的礼物的id遍历并连接
+            for( $i=0; $i<=count($giftids)-1; $i++){
+                
+                $sql .= $giftids[$i] . ";";
+                
+            }
+            
+            //查询出用户本来的已领取的礼物的id
+            $old = DB::row('record', ["apply_receive_gift_id as apply"],"user_id = $user_id")->apply;
+            
+            //连接用户已领取的礼物币数id和用户欲领取的礼物的id
+            $apply = $old.$sql;
+            
+            //计算出最新的已领取的礼物币数
+            $new = $received_gift_coin + $sum;
+            
+            //更新已领取的礼物币数和申请领取的礼物id
+            $result = DB::update('record', 
+                ['received_gift_coin' => $new, 'apply_receive_gift_id' => $apply],
+                "user_id = $user_id");
+            
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+}
+
+
+
+?>

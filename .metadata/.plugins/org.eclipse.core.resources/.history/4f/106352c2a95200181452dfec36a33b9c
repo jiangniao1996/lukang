@@ -1,0 +1,51 @@
+<?php 
+
+namespace QCloud_WeApp_SDK\SetUserReceivedGifts;
+
+use QCloud_WeApp_SDK\Mysql\Mysql as DB;
+
+class SetUserReceivedGifts{
+    
+    public static function set_GiftInfo($open_id,$giftNum,$giftids){
+        
+        $user_id = DB::row('user',['user_id'],['open_id' => $open_id])->user_id;
+
+        $sum = 0;
+        for( $i=0; $i<=count($giftids)-1; $i++ ){
+            
+           $result = DB::row('gift',['gift_coin'],["gift_id" => $giftids[$i]])->gift_coin;
+           $sum += $result;
+        }
+        
+        $gift_coin = DB::row('record',['gift_coin'],["user_id" => $user_id])->gift_coin;
+        $received_gift_coin = DB::row('record',['received_gift_coin'],["user_id" => $user_id])->received_gift_coin;
+        
+        $have_gift_coin = $gift_coin - $received_gift_coin;
+        
+        if( $have_gift_coin >= $sum ){
+            
+            $new = $received_gift_coin + $sum;
+            
+            $result = DB::update('record', ['received_gift_coin' => $new], "user_id = $user_id");
+            
+                $sql = "";
+            for( $i=0; $i<=count($giftids)-1; $i++){
+                
+                $sql .= giftids[$i] . ";";
+                
+            }
+            $old = DB::row('record', ["apply_received_gift_id as apply"],"user_id = $user_id")->apply;
+            
+            return true;
+ 
+        }
+        else{
+            return false;
+        }
+    }
+
+}
+
+
+
+?>

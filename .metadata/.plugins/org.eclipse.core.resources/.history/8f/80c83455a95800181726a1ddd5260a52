@@ -1,0 +1,26 @@
+<?php 
+
+namespace QCloud_WeApp_SDK\GetOpenId;
+
+use QCloud_WeApp_SDK\Mysql\Mysql as DB;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>

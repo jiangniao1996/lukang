@@ -1,0 +1,49 @@
+<?php 
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+include ('../../config.php');
+
+class GetOpenId extends CI_Controller{
+    public $appId = $config['appId'];
+    
+    public function index($appId, $appSecret, $code) {
+        $requestParams = [
+            'appid' => $appId,
+            'secret' => $appSecret,
+            'js_code' => $code,
+            'grant_type' => 'authorization_code'
+        ];
+        list($status, $body) = array_values(Request::get([
+            'url' => 'https://api.weixin.qq.com/sns/jscode2session?' . http_build_query($requestParams),
+            'timeout' => Conf::getNetworkTimeout()
+        ]));
+        
+        if ($status !== 200 || !$body || isset($body['errcode'])) {
+            throw new Exception(Constants::E_PROXY_LOGIN_FAILED . ': ' . json_encode($body));
+        }
+        var_dump($body);
+        return $body;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>

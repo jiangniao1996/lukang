@@ -1,0 +1,38 @@
+<?php 
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+use QCloud_WeApp_SDK\SetUserAdressInfo\SetUserAddressInfo as setInfo;
+
+
+class SetUserAddressInfo extends CI_Controller{
+    
+    public function index(){
+        
+        
+        $openid = $_GET['openid'];
+        $recipients = $_GET['recipients'];
+        $phoneNum = $_GET['phoneNum'];
+        $address = $_GET['address'];
+        $tips = $_GET['tips'];
+        
+        $submitSuccess = setInfo::storeUserAddressInfo($openid,$recipients,$phoneNum,$address,$tips);
+        
+        $this->json([
+            
+            'submitSuccess' => $submitSuccess
+            
+        ]);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+?>

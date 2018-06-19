@@ -1,0 +1,43 @@
+<?php
+
+namespace QCloud_WeApp_SDK\Judge;
+
+use QCloud_WeApp_SDK\AddUserChallengeableNum\AddUserChallengeableNum as add;
+use QCloud_WeApp_SDK\Mysql\Mysql as DB;
+
+class Judge{
+
+	public static function judgeTime($today,$open_id){
+
+		$yesterday = DB::row('user',["judge_time"],['open_id' => $open_id])->judge_time;
+
+		$today_time = strtotime($today);
+		$yesterday_time = strtotime($yesterday);
+
+		$now = round(($today_time-$yesterday_time)/3600/24);
+
+		if( $now >= 1 ){
+            
+			DB::update('user',['judge_time' => $today_time], ['open_id' => $open_id]);
+			add::update($open_id,1);
+			
+		}	
+		else{
+			DB::update('bb', ['user_id' => 69], ["id" => 4]);
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>

@@ -1,0 +1,7 @@
+INDEX VERSION 1.3+D:\PHPWAMP_IN1\PHPWAMP_IN1\wwwroot\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+2799202539.index
+674928024.index
+2050339919.index
+2190497583.index
+1919874098.index
+2216556750.index

@@ -1,0 +1,103 @@
+<?php 
+
+namespace QCloud_WeApp_SDK\SetChallengedInfo;
+use QCloud_WeApp_SDK\Mysql\Mysql as DB;
+
+class SetChallengedInfo{
+    
+    public static function replace($open_id,$num,$maxScore){
+        
+        $user_id = DB::row('user', ['user_id'], ['open_id' => $open_id])->user_id;
+        
+        //设置成功的信息
+        $submitSuccess = self::update($num,$user_id,$maxScore);
+        
+        //是否挑战成功的信息
+        $isChallengedPass = self::is_Success($maxScore,$user_id);        
+        
+        //挑战成功的级别
+        $passedLevel = self::level_Judge($isChallengedPass);
+        
+        return compact("submitSuccess","isChallengedPass","passedLevel");
+ }
+    
+ 
+
+    
+/**
+ * 更新用户挑战记录表可挑战数和已挑战数函数以及比较新旧得分并决定是否更新
+ * 
+ * 传入此次挑战用掉的次数$num 和 用户user_id，使用user_id到record表中
+ * 查询出本来的挑战次数$challenge 和 本来已挑战的次数$challenged
+ * 将$challenge 减去  $num
+ * 将$challenged 加上 $num
+ * 并根据user_id更新相应的数据
+ * 
+ * @param 此次用掉的次数 $num
+ * @param 用户id $user_id
+ */
+     
+    public static function update($num,$user_id,$maxScore){
+        
+        $oldScore = DB::row('record',['highest'],['user_id' => $user_id])->highest;
+        
+        if ($maxScore > $oldScore){
+            
+            $result = DB::update('record', ['highest' => $maxScore], ['user_id' => $user_id]);
+        }
+        
+        $record = DB::row('record',["challenge,challenged"],['user_id'=>$user_id]);
+        $challenge = $record->challenge - $num;
+        $challenged = $record->challenged + $num;
+        
+        $result = DB::update('record', [
+            'challenge' => $challenge,
+            'challenged' => $challenged
+        ],['user_id' => $user_id]);
+        
+        return true;
+    }
+
+
+/**
+ * 判断是否挑战成功函数
+ * 
+ */
+    public static function is_Success($maxScore,$user_id){
+        if($maxScore > 70){
+            DB::row('record',['success_num'],["user_id" => $user_id])->success_num +1;
+            DB::update('record', ['success_num' => $new], ["user_id" => $user_id]);
+            DB::update();
+            return true;
+            
+        }
+        else{
+            return false;
+        }
+    }
+ 
+
+/**
+ * 判断挑战级别函数
+ * 
+ * @param unknown $isChallengedPass
+ * @return boolean
+ */
+    public static function level_Judge($isChallengedPass){
+        if($isChallengedPass == true){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+}
+
+
+
+
+
+
+
+?>

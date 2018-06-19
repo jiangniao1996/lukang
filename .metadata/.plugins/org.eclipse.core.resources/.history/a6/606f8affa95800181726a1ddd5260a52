@@ -1,0 +1,49 @@
+<?php 
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+use \Exception as Exception;
+use \QCloud_WeApp_SDK\Conf as Conf;
+use \QCloud_WeApp_SDK\Constants as Constants;
+use \QCloud_WeApp_SDK\Helper\Request as Request;
+
+
+class GetOpenId extends CI_Controller{
+      
+    public function index() {
+        
+        $appId = 'wx9ec8a399ef96fc2a';
+        $appSecret = '20273257d5b9605b42f1a84fdfabbd99';
+        $code = $_GET['code'];
+        
+        $body = 
+        
+        $this->json([
+            
+            'openId' => $body['openid']
+            
+        ]);
+         
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>

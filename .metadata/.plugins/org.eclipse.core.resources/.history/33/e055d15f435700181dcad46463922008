@@ -1,0 +1,26 @@
+<?php 
+namespace QCloud_WeApp_SDK\GetHonorRank;
+
+use QCloud_WeApp_SDK\Mysql\Mysql as DB;
+
+class GetHonorRank {
+    
+    public static function getlist($num){
+        
+        $honorUserList = DB::select(
+            'user', ["user_nickname,avatarUrl,gift_coin"],
+            "","",
+            "inner join record on user.user_id = record.user_id order by gift_coin desc limit $num");
+        
+        return $result;
+
+        
+    }
+}
+
+
+
+
+
+
+?>

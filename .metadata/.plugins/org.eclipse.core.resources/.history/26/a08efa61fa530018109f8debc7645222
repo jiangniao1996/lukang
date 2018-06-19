@@ -1,0 +1,38 @@
+<?php 
+
+namespace QCloud_WeApp_SDK\SetUserAddressInfo;
+
+use QCloud_WeApp_SDK\Mysql\Mysql as DB;
+
+
+class SetUserAddressInfo {
+    
+    public static function storeUserAddressInfo($openid,$recipients,$phoneNum,$address,$tips){
+        
+        $row = DB::update('user', [
+            'open_id' => $openid,
+            'user_address' => $address,
+            'delivery_phone' => $phoneNum,
+            'delivery_name' => $recipients,
+            'delivery_tips' => $tips
+        ], ['open_id' => $openid]);
+        
+        return $row;
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>

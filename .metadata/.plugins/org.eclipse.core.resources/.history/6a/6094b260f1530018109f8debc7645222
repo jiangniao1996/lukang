@@ -1,0 +1,109 @@
+<?php 
+
+namespace QCloud_WeApp_SDK\SetChallengedInfo;
+use QCloud_WeApp_SDK\Mysql\Mysql as DB;
+
+class SetChallengedInfo{
+    
+    public static function replace($open_id,$num,$maxScore,$game_id){
+        
+        $user_id = DB::row('user', ['user_id'], ['open_id' => $open_id])->user_id;
+        
+        //设置更新的信息
+        $submitSuccess = self::update($num,$user_id,$maxScore,$game_id);
+        
+        //是否挑战成功的信息
+        $isChallengedPass = self::is_Success($maxScore,$user_id);        
+        
+        //挑战成功的级别
+        $passedLevel = self::level_Judge($isChallengedPass);
+        
+        return compact("submitSuccess","isChallengedPass","passedLevel");
+ }
+    
+ 
+
+    
+/**
+ * 更新用户挑战记录表可挑战数和已挑战数函数以及比较新旧得分并决定是否更新
+ * 
+ * 传入此次挑战用掉的次数$num 和 用户user_id，使用user_id到record表中
+ * 查询出本来的挑战次数$challenge 和 本来已挑战的次数$challenged
+ * 将$challenge 减去  $num
+ * 将$challenged 加上 $num
+ * 并根据user_id更新相应的数据
+ * 
+ * @param 此次用掉的次数 $num
+ * @param 用户id $user_id
+ */
+     
+    public static function update($num,$user_id,$maxScore,$game_id){
+        
+        //更新游戏设置表相应游戏id的游戏的总挑战次数
+        $new = DB::row('knowledge',['sum_challenged'],['game_id' => $game_id])->sum_challenged+1;
+        
+        DB::update('knowledge', ["sum_challenged" => $new]); 
+        
+        //判断是否比历史最高分更高，是就更新
+        $oldScore = DB::row('record',['highest'],['user_id' => $user_id])->highest;
+        
+        if ($maxScore > $oldScore){
+            
+            $result = DB::update('record', ['highest' => $maxScore], ['user_id' => $user_id]);
+        }
+        
+        //更新记录表中相对应的user_id的可挑战次数和已挑战次数的信息
+        $record = DB::row('record',["challenge,challenged"],['user_id'=>$user_id]);
+        $challenge = $record->challenge - $num;
+        $challenged = $record->challenged + $num;
+        
+        $result = DB::update('record', [
+            'challenge' => $challenge,
+            'challenged' => $challenged
+        ],['user_id' => $user_id]);
+        
+        return true;
+    }
+
+
+/**
+ * 判断是否挑战成功函数
+ * 
+ */
+    public static function is_Success($maxScore,$user_id){
+        if($maxScore > 70){
+            $new = DB::row('record',['success_num'],["user_id" => $user_id])->success_num +1;
+            $result = DB::update('record', ['success_num' => $new], ["user_id" => $user_id]);
+            return true;
+            
+        }
+        else{
+            return false;
+        }
+    }
+ 
+
+/**
+ * 判断挑战级别函数
+ * 
+ * @param unknown $isChallengedPass
+ * @return boolean
+ */
+    public static function level_Judge($isChallengedPass){
+        if($isChallengedPass == true){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+}
+
+
+
+
+
+
+
+?>

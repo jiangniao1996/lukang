@@ -1,0 +1,24 @@
+<?php 
+
+namespace QCloud_WeApp_SDK\GetSystemChallengedTotalUseres;
+
+use QCloud_WeApp_SDK\Mysql\Mysql as DB;
+
+class GetSystemChallengedTotalUseres {
+    
+    public static function GetTotalInfo(){
+        
+       $numAllChallenged =  DB::row('record', ["count(user_id) as total"])->total;
+       $numAllChallengedSuccess = DB::row('record', ["count(user_id) as total"], "success_num > 0")->total;
+       $numAllReceivedGift = DB::row('record', ["count(user_id) as total"], "gift_coin > 0")->total;
+       
+
+       return compact("numAllChallenged","numAllChallengedSuccess","numAllReceivedGift");
+
+    }
+}
+
+
+
+
+?>

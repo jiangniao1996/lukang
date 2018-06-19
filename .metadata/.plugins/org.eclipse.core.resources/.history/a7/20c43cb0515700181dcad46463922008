@@ -1,0 +1,34 @@
+<?php 
+
+namespace QCloud_WeApp_SDK\GetChallengeInfo;
+
+use QCloud_WeApp_SDK\Mysql\Mysql as DB;
+
+class GetChallengeInfo{
+    
+    public static function getInfo($open_id){
+        
+        
+        $user_id = DB::row('user', ['user_id'], ['open_id' => $open_id])->user_id;
+        //$challenge = DB::row('record', ['challenge'], ['user_id' => $user_id])->challenge;
+        
+        $sql = "challenge,challenged,success_num,highest";
+        $info = DB::row('record', [$sql], ['user_id' => $user_id]);
+        
+        $challenge = DB::row('record',['challenge'],['user_id' => $user_id])->challenge;
+        
+        if( $challenge > 0 ){
+            return $info;
+        }
+        else{
+            return false;
+        }
+        
+    }  
+}
+
+
+
+
+
+?>

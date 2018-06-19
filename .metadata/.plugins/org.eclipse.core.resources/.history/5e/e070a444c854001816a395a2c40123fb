@@ -1,0 +1,22 @@
+<?php 
+
+namespace QCloud_WeApp_SDK\GetPersistanceRank;
+
+use QCloud_WeApp_SDK\Mysql\Mysql as DB;
+
+class GetPersistanceRank {
+    
+    public static function get_PersistanceRank($num){
+        
+        $result = DB::select(
+            'user',["user_nickname,avatarUrl,challenged"],
+            "","",
+            "inner join record on user.user_id = record.user_id order by challenged desc limit $num");
+            
+        return $result;
+    }
+}
+
+
+
+?>

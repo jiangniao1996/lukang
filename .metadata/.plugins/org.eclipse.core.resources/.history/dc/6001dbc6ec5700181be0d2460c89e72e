@@ -1,0 +1,30 @@
+<?php
+
+namespace QCloud_WeApp_SDK\AddUserChallengeableNum;
+use QCloud_WeApp_SDK\Mysql\Mysql as DB;
+
+
+class AddUserChallengeableNum {
+    
+    public static function Update($open_id,$num){
+        
+        
+        $user_id = DB::row('user', ['user_id'], ['open_id' => $open_id])->user_id;
+
+        $old = DB::row('record', ['challenge'], ['user_id' => $user_id])->challenge;
+        
+        $new = $old + $num;
+        
+        $sql = "";
+        
+        $row = DB::update('record', ["challenge" => $new], ['user_id' => $user_id]);
+
+        return true;
+
+    }
+}
+
+
+
+
+?>

@@ -1,0 +1,35 @@
+<?php 
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+use QCloud_WeApp_SDK\GetPersistanceRank\GetPersistanceRank as get_Rank;
+
+class GetPersistanceRank extends CI_Controller{
+    
+    public function index(){
+        
+        $num = $_GET['num'];
+        $result = get_Rank::get_PersistanceRank($num);
+        
+        $this->json([
+            
+            'persistanceUserList' => $result['persistanceUserList'],
+            'numPersistanceUseres' => $result['num']
+            
+            
+        ]);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+?>

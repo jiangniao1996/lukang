@@ -1,0 +1,34 @@
+<?php 
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+use QCloud_WeApp_SDK\GetHonorRank\GetHonorRank as get_rank;
+
+class GetHonorRank extends CI_Controller{
+    
+    public function index(){
+        
+        $num = $_GET['num'];
+        $result = get_rank::getlist($num);
+        
+        $this->json([
+            'numHonorUsers' => $num,
+            'honorUserList' => $honorUserList
+        ]);
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>

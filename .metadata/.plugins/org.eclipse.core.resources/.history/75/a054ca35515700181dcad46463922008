@@ -1,0 +1,39 @@
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+//  use QCloud_WeApp_SDK\Mysql\Mysql as DB;
+use QCloud_WeApp_SDK\GetChallengeInfo\GetChallengeInfo as get_Info;
+
+class GetChallengeInfo extends CI_Controller{
+    
+    public function index(){
+        
+        //根据传进来的openid从数据库取得该用户的可挑战次数
+        $open_id = $_GET['openid'];
+           
+        $info = get_Info::getInfo($open_id);
+        
+        
+        //输出可挑战次数
+        if( $info > 0){
+        $this->json([
+
+            'challengeNum' => $info->challenge,
+            'challengedNum' => $info->challenged,
+            'maxScore' => $info->highest,
+            'SuccessChallengedNum' => $info->success_num
+            
+        ]);
+        }else{
+            
+        }
+        
+        
+        
+    }
+}
+
+
+
+
+?>

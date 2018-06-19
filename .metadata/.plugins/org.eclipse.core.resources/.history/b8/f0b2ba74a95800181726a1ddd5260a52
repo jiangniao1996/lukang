@@ -1,0 +1,29 @@
+<?php 
+
+namespace QCloud_WeApp_SDK\GetOpenId;
+
+use \Exception as Exception;
+use \QCloud_WeApp_SDK\Conf as Conf;
+use \QCloud_WeApp_SDK\Constants as Constants;
+use \QCloud_WeApp_SDK\Helper\Request as Request;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>

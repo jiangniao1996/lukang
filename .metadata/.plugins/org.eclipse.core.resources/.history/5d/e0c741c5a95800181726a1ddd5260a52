@@ -1,0 +1,56 @@
+<?php 
+
+namespace QCloud_WeApp_SDK\GetOpenId;
+
+use \Exception as Exception;
+use \QCloud_WeApp_SDK\Conf as Conf;
+use \QCloud_WeApp_SDK\Constants as Constants;
+use \QCloud_WeApp_SDK\Helper\Request as Request;
+
+class GetOpenId{
+    
+    public static function get_OpenId($code){
+        
+        $appId = 'wx9ec8a399ef96fc2a';
+        $appSecret = '20273257d5b9605b42f1a84fdfabbd99';
+        
+        $requestParams = [
+            'appid' => $appId,
+            'secret' => $appSecret,
+            'js_code' => $code,
+            'grant_type' => 'authorization_code'
+        ];
+        list($status, $body) = array_values(Request::get([
+            'url' => 'https://api.weixin.qq.com/sns/jscode2session?' . http_build_query($requestParams),
+            'timeout' => Conf::getNetworkTimeout()
+        ]));
+        
+        if ($status !== 200 || !$body || isset($body['errcode'])) {
+            throw new Exception(Constants::E_PROXY_LOGIN_FAILED . ': ' . json_encode($body));
+        }
+        
+        return $body;
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>

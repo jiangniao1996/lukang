@@ -1,0 +1,42 @@
+<?php 
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+use QCloud_WeApp_SDK\GetUserAddressInfo\GetUserAddressInfo as getInfo;
+
+class GetUserAddressInfo extends CI_Controller{
+    
+    public function index(){
+        
+        $openid = $_GET['openid'];
+        $result = getInfo::showUserAddressInfo($openid);
+        
+        $this->json([
+            "" => $result            
+//             'recipients' => $result->delivery_name,
+//             'phoneNum' => $result->delivery_phone,
+//             'address' => $result->user_address,
+//             'tips' => $result->delivery_tips
+            
+        ]);
+    }
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>

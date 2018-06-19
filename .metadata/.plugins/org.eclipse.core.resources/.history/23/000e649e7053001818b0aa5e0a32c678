@@ -1,0 +1,46 @@
+<?php 
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+use QCloud_WeApp_SDK\SetChallengedInfo\SetChallengedInfo as set_Info;
+
+class SetChallengedInfo extends CI_Controller{
+    
+    public function index(){
+        $open_id = $_GET['openid'];
+        $num = $_GET['updateChallengeNum'];
+        $maxScore = $_GET['maxScore'];
+        $game_id = $_GET['game_id'];
+        
+        $result = set_Info::replace($open_id,$num,$maxScore);
+        
+        $this->json([
+            
+           'submitSuccess' => $result['submitSuccess'],
+           'isChallengedPass' => $result['isChallengedPass'],
+           'passedLevel' => $result['passedLevel']
+            
+        ]);
+        
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?>
