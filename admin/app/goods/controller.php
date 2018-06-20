@@ -2231,23 +2231,82 @@ class GoodsController extends Controller{
 	 */
 	function business_list(){
 	    
-	    $sql  = "SELECT DISTINCT tb1.business_name, tb1.business_id, tb2.gift_id, tb2.gift_name, tb2.gift_incept";
-	    $sql .= " FROM {$this->App->prefix()}business AS tb1 INNER JOIN {$this->App->prefix()}gift AS tb2 ON";
-	    $sql .= " tb1.business_id = tb2.business_id";
+        $sql = " SELECT business_name,business_id FROM {$this->App->prefix()}business";
+        $business_info = $this->App->find($sql);
 	    
-	    $businesslist = $this->App->find($sql);
+        $sql  = " SELECT tb2.business_id, tb1.gift_name, tb1.gift_id, tb1.gift_incept FROM {$this->App->prefix()}gift AS tb1 INNER JOIN";
+        $sql .= " {$this->App->prefix()}business AS tb2 ON tb1.business_id = tb2.business_id";
+        $gift_info = $this->App->find($sql);
         
-	    
-	    echo "<pre>";
-	    var_dump($businesslist);
-	    
-	    
+        $result = array();
+        foreach( $gift_info as $key=>$row )$result[$row['business_id']][] = $row;
+        ksort($result);
+        
+        $gift_arr = array();
+        foreach( $result as $key=>$top ){
+           
+            foreach ( $top as $middle ){
+                
+                $gift_arr[] = $middle;
+            }
+        }
+        
+        $new = array();
+        foreach( $gift_arr as $row )$new[$row['business_id']][] = $row;
+
+        $businesslist = array();
+        $i = 0;
+        foreach( $business_info as $row){
+            
+           $businesslist[$i]['business_id'] = $row['business_id'];
+           $businesslist[$i]['business_name'] = $row['business_name'];
+           
+           foreach ( $new as $key => $ll){
+               
+               if( $row['business_id'] == $key ){
+                   $businesslist[$i]['gift_info'] = $ll;
+                   $businesslist[$i]['gift_incept_sum'] = $this->get_business_incept_sum($row['business_id']);
+               }
+           }
+           $i++;
+        }
 	    
 	    $this->set('businesslist',$businesslist);
 	    $this->template('business_list');
+	    
+        echo "<pre>";
+        print_r($businesslist);
+	}
+
+	
+	/**
+	 * 根据gift_id获取商家提供的该礼物的总数量
+	 * @param unknown $gift_id
+	 * @return unknown
+	 */
+	function get_gift_incept($gift_id){
+	    
+	    $sql = " SELECT gift_incept FROM {$this->App->prefix()}gift WHERE gift_id = $gift_id";
+	    $result = $this->App->findvar($sql);
+	    return $result;
 	}
 	
-	
+	function get_business_incept_sum($business_id){
+	    
+	    $sql = " SELECT SUM(gift_incept) FROM {$this->App->prefix()}gift WHERE business_id = $business_id";
+	    $result = $this->App->findvar($sql);
+	    return $result;
+	}
 	
 }
+
+
+
+
+
+
+
+
+
+
 ?>

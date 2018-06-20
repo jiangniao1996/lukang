@@ -12,24 +12,28 @@
 	</tr>
 	<?php 
 	if(!empty($businesslist)){
+	    $i = 99;
 	    foreach($businesslist as $row){
-
 	    ?>
 	<tr>
 	<td><input type="checkbox" name="quanxuan" value="<?php echo $row['business_id'];?>" class="gids"/></td>
 	<td><?php echo $row['business_name']?></td>
 	<td>
-    	<select>
-    		<option value="<?php echo $row['gift_id']?>"><?php echo $row['gift_name']?></option>
+    	<select onchange="getincept(this.id)" id="<?php echo $i?>">
+    	<option value="ALL" id="<?php $row['business_id']?>">所有</option>
+		<?php if(!empty($row['gift_info'])){
+		          foreach( $row['gift_info'] as $gift_list ){?>
+    		<option value="<?php echo $gift_list['gift_id']?>" id="<?php $row['business_id']?>"><?php echo $gift_list['gift_name']?></option>
+    	<?php }}?>
     	</select>
 	</td>
-	<td><?php echo $row['gift_incept']?></td>
+	<td><?php echo $row['gift_incept_sum']?></td>
 	<td>
 	<a href="goods.php?type=business_info&id=<?php $row['id']?>" title="编辑"><img src="<?php echo $this->img('icon_edit.gif');?>" title="编辑"/></a>&nbsp;
 	<img src="<?php echo $this->img('icon_drop.gif');?>" title="删除" alt="删除" id="<?php echo $row['business_id']?>" class="delcateid"/>
 	</td>
 	</tr>
-	<?php }}?>
+	<?php $i++;}}?>
 	<tr>
 		<td colspan="7"> <input type="checkbox" class="quanxuanall" value="checkbox"/>
 			<input type="button" name="button" value="批量删除" disabled="disabled" class="bathdel" id="bathdel" />
@@ -40,6 +44,16 @@
 </div>
 <?php $thisurl = ADMIN_URL.'goods.php'; ?>
 <script type="text/javascript">
+
+function getincept(id){
+	
+   
+	var myselect = document.getElementById(id);
+	var index = myselect.selectedIndex;
+	var giftid = myselect.options[index].value;
+
+}
+
 //全选
  $('.quxuanall').click(function (){
       if(this.checked==true){
@@ -124,7 +138,6 @@
 		});
 	});
 	
-	
 	//ajax排序处理
 	$('.vieworder').click(function (){ edit(this); });
 	function edit(object){
@@ -198,6 +211,7 @@
 		}
 		return true;
 	}
+
 </script>
 
 
