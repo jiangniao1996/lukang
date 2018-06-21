@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $db_host   = "localhost:3306";
 // 数据库名称
 $db_name   = "demo";
