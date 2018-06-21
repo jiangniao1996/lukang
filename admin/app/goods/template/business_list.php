@@ -17,7 +17,7 @@
 	    ?>
 	<tr>
 	<td><input type="checkbox" name="quanxuan" value="<?php echo $row['business_id'];?>" class="gids"/></td>
-	<td><?php echo $row['business_name']?></td>
+	<td class=<?php echo $i;?>><?php echo $row['business_name']?></td>
 	<td>
     	<select onchange="getincept(this.id)" id="<?php echo $i?>">
     	<option value="ALL" id="<?php $row['business_id']?>">所有</option>
@@ -27,9 +27,9 @@
     	<?php }}?>
     	</select>
 	</td>
-	<td><?php echo $row['gift_incept_sum']?></td>
+	<td class=<?php echo $i;?>><?php echo isset($row['gift_incept_sum']) ? $row['gift_incept_sum'] : '0';?></td>
 	<td>
-	<a href="goods.php?type=business_info&id=<?php $row['id']?>" title="编辑"><img src="<?php echo $this->img('icon_edit.gif');?>" title="编辑"/></a>&nbsp;
+	<a href="goods.php?type=business_info&id=<?php echo $row['business_id']?>" title="编辑"><img src="<?php echo $this->img('icon_edit.gif');?>" title="编辑"/></a>&nbsp;
 	<img src="<?php echo $this->img('icon_drop.gif');?>" title="删除" alt="删除" id="<?php echo $row['business_id']?>" class="delcateid"/>
 	</td>
 	</tr>
@@ -39,7 +39,6 @@
 			<input type="button" name="button" value="批量删除" disabled="disabled" class="bathdel" id="bathdel" />
 		</td>
 	</tr>
-
 	</table>
 </div>
 <?php $thisurl = ADMIN_URL.'goods.php'; ?>
@@ -47,11 +46,23 @@
 
 function getincept(id){
 	
-   
 	var myselect = document.getElementById(id);
 	var index = myselect.selectedIndex;
-	var giftid = myselect.options[index].value;
+	var giftid = myselect.value;
+	
+	if(giftid == 'ALL'){
+		var businessname = document.getElementsByClassName(id)[0].innerHTML;
 
+	$.post('<?php echo $thisurl;?>',{action:'get_giftincept',id:businessname,sign:'sum'},function(data){
+		document.getElementsByClassName(id)[1].innerHTML = data;
+		});
+	}else{
+
+	$.post('<?php echo $thisurl;?>',{action:'get_giftincept',id:giftid},function(data){
+		document.getElementsByClassName(id)[1].innerHTML = data;
+			console.log(data);
+		});
+	}
 }
 
 //全选

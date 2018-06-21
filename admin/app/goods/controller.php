@@ -196,7 +196,7 @@ class GoodsController extends Controller{
                     $ws = str_replace('tb1.','',$w);
                 }
             }
-            $list = 8;
+            $list = 15;
             $start = ($page-1)*$list;
             $sql = "SELECT COUNT(gift_id) FROM `{$this->App->prefix()}gift` $ws";
             $tt = $this->App->findvar($sql);
@@ -468,475 +468,20 @@ class GoodsController extends Controller{
 	function goods_info($gid=0){
             $this->js(array("kindeditor/kindeditor.js","kindeditor/lang/zh_CN.js",'time/WdatePicker.js'));
 			$this->css('default.css');
-
-			//公共部分
-// 			if(isset($_POST)&&!empty($_POST)){
-// 				$_POST['is_best'] = isset($_POST['is_best'])&&intval($_POST['is_best'])>0 ? intval($_POST['is_best']) : '0';
-// 				$_POST['is_new'] = isset($_POST['is_new'])&&intval($_POST['is_new'])>0 ? intval($_POST['is_new']) : '0';
-// 				$_POST['is_hot'] = isset($_POST['is_hot'])&&intval($_POST['is_hot'])>0 ? intval($_POST['is_hot']) : '0';
-// 				$_POST['is_on_sale'] = isset($_POST['is_on_sale'])&&intval($_POST['is_on_sale'])>0 ? intval($_POST['is_on_sale']) : '1';
-// 				$_POST['is_shipping'] = isset($_POST['is_shipping'])&&intval($_POST['is_shipping'])>0 ? intval($_POST['is_shipping']) : '0';
-// 				$_POST['is_alone_sale'] = isset($_POST['is_alone_sale'])&&intval($_POST['is_alone_sale'])>0 ? '0' : '1';
-// 				$_POST['is_promote'] = isset($_POST['is_promote'])&&intval($_POST['is_promote'])>0 ? intval($_POST['is_promote']) : '0';
-// 				if($_POST['is_promote']=='1'){
-				
-// 					if(isset($_POST['promote_start_date'])&&!empty($_POST['promote_start_date'])){
-// 				 		$_POST['promote_start_date'] =  strtotime($_POST['promote_start_date'].' '.$_POST['xiaoshi_start'].':'.$_POST['fen_start'].':'.$_POST['miao_start']);
-// 					}
-// 					if(isset($_POST['promote_end_date'])&&!empty($_POST['promote_end_date'])){
-// 						 $_POST['promote_end_date'] =  strtotime($_POST['promote_end_date'].' '.$_POST['xiaoshi_end'].':'.$_POST['fen_end'].':'.$_POST['miao_end']);
-// 					}
-// 				}
-// 				unset($_POST['xiaoshi_start'],$_POST['fen_start'],$_POST['miao_start']);
-// 				unset($_POST['xiaoshi_end'],$_POST['fen_end'],$_POST['miao_end']);
-				
-				
-// 				$_POST['is_qianggou'] = isset($_POST['is_qianggou'])&&intval($_POST['is_qianggou'])>0 ? intval($_POST['is_qianggou']) : '0';
-// 				$_POST['qianggou_start_date'] = isset($_POST['qianggou_start_date'])&&!empty($_POST['qianggou_start_date']) ? strtotime($_POST['qianggou_start_date']) : '0';
-// 				$_POST['qianggou_end_date'] = isset($_POST['qianggou_end_date'])&&!empty($_POST['qianggou_end_date']) ? strtotime($_POST['qianggou_end_date']) : '0';
-// 				$_POST['is_jifen'] = isset($_POST['is_jifen'])&&intval($_POST['is_jifen'])>0 ? intval($_POST['is_jifen']) : '0';
-// 				$_POST['is_check'] = '1';
-// 			   ######################
-// 				//添加商品属性||过滤商品属性字段，以更好插入到商品表
-// 				$atid = array('attr_id_list'=>'0'); //属性id，在gz_attribute表中
-// 				$atvalue = array('attr_value_list'=>'0'); //用户添加的值
-// 				$ataddi = array('attr_addi_list'=>'0'); //附加的东西，例如可以是价格图片等其他东西
-// 				$gadesc = array('photo_gallery_desc'=>'0'); //商品相册描述
-// 				$gaurl = array('photo_gallery_url'=>'0'); //商品相册图片
-// 				$goods_gift = array('gift_type'=>'0'); 
-// 				$nprice = array('numberprice'=>'0');
-// 				$nrank = array('numberrank'=>'0');
-				
-// 				$attr_id_list = array();
-// 				$attr_value_list = array();
-// 				$attr_addi_list = array();
-// 				$photo_gallery_desc = array();
-// 				$photo_gallery_url = array();
-// 				$goods_gift_arr = array();
-// 				$numberprice =array(); //会员价格与等级是一一对应的
-// 				$numberrank =array();
-				
-				
-// 				if(isset($_POST['gift_type'])){
-// 					$goods_gift_arr = $_POST['gift_type'];
-// 					$_POST = array_diff_key($_POST,$goods_gift);
-// 				}
-				
-// 				if(isset($_POST['attr_id_list'])){
-// 					$attr_id_list = $_POST['attr_id_list']; //属性id，在gz_attribute表中
-// 					$_POST = array_diff_key($_POST,$atid);
-// 				}
-// 				if(isset($_POST['attr_value_list'])){
-// 					$attr_value_list = $_POST['attr_value_list']; //用户添加的值
-// 					$_POST = array_diff_key($_POST,$atvalue);
-// 				}
-// 				if(isset($_POST['attr_addi_list'])){
-// 					$attr_addi_list = $_POST['attr_addi_list']; //附加的东西，例如可以使图片等其他东西
-// 					$_POST = array_diff_key($_POST,$ataddi);
-// 				}
-//                 //商品相册描述
-//                 if(isset($_POST['photo_gallery_desc'])){
-// 					$photo_gallery_desc = $_POST['photo_gallery_desc'];
-// 					$_POST = array_diff_key($_POST,$gadesc);
-// 				}
-//                 //商品相册图片
-//                 if(isset($_POST['photo_gallery_url'])){
-// 					$photo_gallery_url = $_POST['photo_gallery_url'];
-// 					$_POST = array_diff_key($_POST,$gaurl);
-// 				}
-// 				//商品的额外分类处理
-// 				$sd = array('sub_cat_id'=>'0');
-// 				$subcateid = array();
-// 				if(isset($_POST['sub_cat_id'])){
-// 						$subcateid = $_POST['sub_cat_id'];
-// 						$_POST = array_diff_key($_POST,$sd);
-// 				}
-								
-// 				//会员等级价格
-//                 if(isset($_POST['numberprice'])){
-// 					$numberprice = $_POST['numberprice'];
-// 					$_POST = array_diff_key($_POST,$nprice);
-// 				}
-// 				//会员等级
-//                 if(isset($_POST['numberrank'])){
-// 					$numberrank = $_POST['numberrank'];
-// 					$_POST = array_diff_key($_POST,$nrank);
-// 				}
-// 				####################
-// 			}
-			
-			
-//             if($gid>0){ //编辑页面
-// 			//当前商品基本信息
-// 			$sql = "SELECT * FROM `{$this->App->prefix()}goods` WHERE goods_id='{$gid}' LIMIT 1";
-//             $rt = $this->App->findrow($sql);
-// 			if(empty($rt)){ $this->jump('goods.php?type?goods_list'); exit;}
-// 			//当前商品的相册
-// 			$sql = "SELECT * FROM `{$this->App->prefix()}goods_gallery` WHERE goods_id='$gid'";
-// 			$this->set('gallerylist',$this->App->find($sql));
-// 			//当前商品属性的属性
-// 			$sql = "SELECT tb1.*,tb2.attr_name,tb2.attr_is_select FROM `{$this->App->prefix()}goods_attr` AS tb1 LEFT JOIN `{$this->App->prefix()}attribute` AS tb2 ON tb1.attr_id=tb2.attr_id WHERE tb1.goods_id='$gid'";
-// 			$goods_attr = $this->App->find($sql);
-// 			$rt['goods_attr'] = array();
-// 			if(!empty($goods_attr)){
-// 				foreach($goods_attr as $row){
-// 					$rt['goods_attr'][$row['attr_id']][] = $row;
-// 				}
-// 				unset($row,$goods_attr);
-// 			}
-			
-			//商品的赠品类型
-// 			$sql = "SELECT  type  FROM `{$this->App->prefix()}goods_gift` WHERE goods_id='$gid'";
-// 			$rt['gift_type_id'] = $this->App->findcol($sql);
-						
-//                         if(isset($_POST)&&!empty($_POST)){
-// 								if(empty($_POST['goods_name'])){
-//                                     echo'<script>alert("商品名称不能为空！");</script>';
-//                                 }else{
-//                                     /*if(empty($_POST['original_img'])){
-//                                             $this->jump('goods.php?type=goods_info&id='.$gid,0,'请你先上传图片'); exit;
-//                                     }*/
-
-//                                     //货号
-//                                     if(empty($_POST['goods_sn'])){
-//                                          $_POST['goods_sn'] = 'GZFH' . str_repeat('0', 6 - strlen($gid)) . $gid;
-//                                     }
-//                                     //检查当前的货号是否存在
-//                                     $checkvar = $this->App->findvar("SELECT goods_sn FROM `{$this->App->prefix()}goods` WHERE goods_sn=$_POST[goods_sn] LIMIT 1");
-//                                     if(!empty($checkvar)){
-//                                          $_POST['goods_sn'] = $_POST['goods_sn'].'-1'; //重新定义一个
-//                                     }
-
-//                                      if($rt['original_img']!=$_POST['original_img']){
-//                                             //修改了上传文件 那么重新上传
-//                                             $source_path = SYS_PATH.DS.str_replace('/',DS,$_POST['original_img']);
-//                                             $pa = dirname($_POST['original_img']);
-//                                             $thumb = basename($_POST['original_img']);
-											
-// 											$tw_s = (intval($GLOBALS['LANG']['th_width_s']) > 0) ? intval($GLOBALS['LANG']['th_width_s']) : 200;
-// 											$th_s = (intval($GLOBALS['LANG']['th_height_s']) > 0) ? intval($GLOBALS['LANG']['th_height_s']) : 200;
-// 											$tw_b = (intval($GLOBALS['LANG']['th_width_b']) > 0) ? intval($GLOBALS['LANG']['th_width_b']) : 450;
-// 											$th_b = (intval($GLOBALS['LANG']['th_height_b']) > 0) ? intval($GLOBALS['LANG']['th_height_b']) : 450;
-// 											if(isset($_POST['goods_thumb'])&&!empty($_POST['goods_thumb'])){
-// 											   //留空
-// 											    if(!file_exists(SYS_PATH.$_POST['goods_thumb'])){
-// 											    	Import::img()->thumb($source_path,dirname($source_path).DS.'thumb_s'.DS.$thumb,$tw_s,$th_s); //小缩略图
-//                                             		$_POST['goods_thumb'] = $pa.'/thumb_s/'.$thumb;
-// 												}
-// 											}else{
-//                                             	Import::img()->thumb($source_path,dirname($source_path).DS.'thumb_s'.DS.$thumb,$tw_s,$th_s); //小缩略图
-//                                             	$_POST['goods_thumb'] = $pa.'/thumb_s/'.$thumb;
-// 											}
-											 
-//                                             Import::img()->thumb($source_path,dirname($source_path).DS.'thumb_b'.DS.$thumb,$tw_b,$th_b); //大缩略图
-//                                             $_POST['goods_img'] = $pa.'/thumb_b/'.$thumb;
-//                                      }
-//                                      $_POST['meta_keys'] = !empty($_POST['meta_keys']) ? str_replace(array('，','。','.'),',',$_POST['meta_keys']) : "";
-									 
-// 									 $_POST['last_update'] = mktime(); //更新时间
-//                                      $this->App->update('goods',$_POST,'goods_id',$gid);
-								
-//                                      //更新商品属性[从新添加]
-//                                      if(!empty($attr_id_list)&&!empty($gid)){
-//                                             foreach($attr_id_list as $kk=>$id){
-//                                                     if(empty($attr_value_list[$kk])) continue;
-//                                                     $rtdata = array();
-//                                                     $rtdata['attr_id'] = $id;
-//                                                     $rtdata['attr_value'] = isset($attr_value_list[$kk]) ? $attr_value_list[$kk] : "NULL";
-//                                                     $rtdata['goods_id'] = $gid;
-//                                                     $rtdata['attr_addi'] = isset($attr_addi_list[$kk]) ? $attr_addi_list[$kk] : "";
-//                                                     $this->App->insert('goods_attr',$rtdata);
-//                                             }
-//                                             unset($rtdata);
-//                                      }
-//                                      ###########更新商品相册##########
-//                                      if(!empty($photo_gallery_url)&&!empty($gid)){
-//                                           foreach($photo_gallery_url as $kk=>$url){
-//                                                if(empty($url)) continue;
-//                                                 $rtdata['img_desc'] = isset($photo_gallery_desc[$kk]) ? $photo_gallery_desc[$kk] : "";
-//                                                 $rtdata['goods_id'] = $gid;
-//                                                 $rtdata['img_url'] = $url;
-//                                                 $this->App->insert('goods_gallery',$rtdata);
-//                                           }
-//                                           unset($rtdata);
-//                                      }
-//                                      //商品的子分类
-//                                      if(!empty($subcateid)){
-//                                            foreach($subcateid as $ids){
-//                                                $dd = array();
-//                                                $dd['goods_id'] = $gid;
-//                                                $dd['cat_id'] = $ids;
-//                                                $this->App->insert('category_sub_goods',$dd);
-//                                            }
-//                                      }
-// 									 //将关键字添加到goods_keyword表
-// 									 if(!empty($_POST['meta_keys'])){
-// 									 	$keys = explode(',',$_POST['meta_keys']);
-// 										foreach($keys as $key){
-// 											if(empty($key)) continue;
-// 											$key = trim($key);
-// 											$sql = "SELECT kid FROM `{$this->App->prefix()}goods_keyword` WHERE goods_id='$gid' AND keyword='$key'";
-// 											$kid = $this->App->findvar($sql);
-// 											$ds = array();
-// 											if(empty($kid)){
-// 												$ds['goods_id'] = $gid;
-// 												$ds['keyword'] = $key;
-// 												$n = Import::basic()->Pinyin($key);
-// 												$ds['p_fix'] = !empty($n) ? ucwords(substr($n,0,1)) : "NAL";
-// 												$this->App->insert('goods_keyword',$ds);
-// 											}
-// 										}
-// 										unset($keys);
-// 									 }
-									 
-// 									 //赠品
-// 									 if(!empty($goods_gift_arr)){
-// 									 	foreach($goods_gift_arr as $tt){
-// 											if(empty($tt)) continue;
-// 											$dd['goods_id'] = $gid;
-// 											$dd['type'] = $tt;
-// 											$sql = "SELECT gifid FROM `{$this->App->prefix()}goods_gift` WHERE goods_id='$gid' AND type='$tt'";
-// 											$a = $this->App->findvar($sql);
-// 											if(empty($a)){
-// 												$this->App->insert('goods_gift',$dd);
-// 											}
-// 										}
-// 									 }
-									 
-// 									 //会员等级价格添加
-// 									 if(!empty($numberprice)){
-// 										 foreach($numberprice as $ks=>$price){
-// 										 	//检查是否已经存在
-// 											$rankid= $numberrank[$ks];
-// 											$sql = "SELECT price_id FROM `{$this->App->prefix()}goods_user_price` WHERE goods_id='$gid' AND user_rank='$rankid'";
-// 											$price_id = $this->App->findvar($sql);
-// 											if($price_id>0){ //存在
-// 												if($price > 0){ //更改
-// 													$sql = "UPDATE `{$this->App->prefix()}goods_user_price` SET user_price='$price' WHERE goods_id='$gid' AND user_rank='$rankid'";
-// 													$this->App->query($sql);
-// 												}else{ //删除
-// 													$sql = "DELETE FROM `{$this->App->prefix()}goods_user_price` WHERE goods_id='$gid' AND user_rank='$rankid'";
-// 													$this->App->query($sql);
-// 												}
-// 											}else{ //添加
-// 													$dt = array();
-// 													$dt['goods_id'] = $gid;
-// 													$dt['user_rank'] = $rankid;
-// 													$dt['user_price'] = $price;
-// 													$this->App->insert('goods_user_price',$dt);
-// 											}
-// 										 }
-// 									 }
-									 
-// 									 //添加分类与品牌与商品关联
-// 									 /*if($_POST['cat_id'] > 0 && $_POST['brand_id'] > 0){
-// 									 	$cid = intval($_POST['cat_id']);
-// 										$bid = intval($_POST['brand_id']);
-// 										$gid = $gid;
-// 										$ggid = $this->App->findvar("SELECT cbgid FROM `{$this->App->prefix()}cate_brand_goods` WHERE gid='$gid' LIMIT 1");
-// 										if($ggid > 0){//更新 
-// 											$this->App->update('cate_brand_goods',array('cid'=>$bid,'bid'=>$bid),'gid',$ggid);
-// 										}else{ //添加
-// 											$this->App->insert('cate_brand_goods',array('cid'=>$cid,'bid'=>$bid,'gid'=>$gid));
-// 										}
-// 									 }*/
-									 
-//                                      $this->action('system','add_admin_log','修改商品:'.$_POST['goods_name'].'-goods_id:'.$gid);
-//                                      $this->action('common','showdiv',$this->getthisurl());
-//                                 }
-// 			}
-//                         //该商品的其他子分类
-//                         $sql = " SELECT tb1.*,tb2.cat_name FROM `{$this->App->prefix()}category_sub_goods` AS tb1";
-//                         $sql .=" LEFT JOIN `{$this->App->prefix()}goods_cate` AS tb2 ON tb1.cat_id = tb2.cat_id";
-//                         $sql .=" WHERE tb1.goods_id='$gid'";
-//                         $this->set('subcatelist',$this->App->find($sql));
-//                         $this->set('type','edit');
-// 		}else{
-//                         //添加
-//                         if(isset($_POST)&&!empty($_POST)){
-//                              if(empty($_POST['goods_name'])){
-//                                  echo'<script>alert("商品名称不能为空！");</script>';
-//                              }else{ 
-//                                  $_POST['meta_keys'] = !empty($_POST['meta_keys']) ? str_replace(array('，','。','.'),',',$_POST['meta_keys']) : "";
-//                                  $_POST['add_time'] = mktime();
-//                                  if(!isset($_POST['goods_sn']) || empty ($_POST['goods_sn'])){
-//                                      $gid = $this->App->findvar("SELECT MAX(goods_id) + 1 FROM `{$this->App->prefix()}goods`");
-//                                      $gid = empty($gid) ? 1 : $gid;
-//                                      $goods_sn = 'GZFH' . str_repeat('0', 6 - strlen($gid)) . $gid;
-//                                      $_POST['goods_sn'] = $goods_sn;
-//                                  }
-//                                  //检查当前的货号是否存在
-//                                  $checkvar = $this->App->findvar("SELECT goods_sn FROM `{$this->App->prefix()}goods` WHERE goods_sn=$_POST[goods_sn] LIMIT 1");
-//                                  if(!empty($checkvar)){
-//                                      $_POST['goods_sn'] = $_POST['goods_sn'].'-1'; //重新定义一个
-//                                  }
-//                                  //商品图片
-//                                  if(!empty($_POST['original_img'])){
-//                                     $pa = dirname($_POST['original_img']);
-//                                     $thumb = basename($_POST['original_img']);
-//                                     //商品小图
-// 									if(isset($_POST['goods_thumb'])&&!empty($_POST['goods_thumb'])){
-// 										//留空即可
-// 									}else{
-// 										$_POST['goods_thumb'] = $pa.'/thumb_s/'.$thumb;
-// 									}
-// 									//商品中图
-//                                     $_POST['goods_img'] = $pa.'/thumb_b/'.$thumb;
-//                                  }
-									
-//                                  if($this->App->insert('goods',$_POST)){
-//                                          ##########商品属性添加###########
-//                                          $isertid = $this->App->iid();
-//                                          if(!empty($attr_id_list)&&!empty($isertid)){
-//                                                 foreach($attr_id_list as $kk=>$id){
-//                                                         if(empty($attr_value_list[$kk])) continue;
-//                                                         $rtdata = array();
-//                                                         $rtdata['attr_id'] = $id;
-//                                                         $rtdata['attr_value'] = isset($attr_value_list[$kk]) ? $attr_value_list[$kk] : "NULL";
-//                                                         $rtdata['goods_id'] = $isertid;
-//                                                         $rtdata['attr_addi'] = isset($attr_addi_list[$kk]) ? $attr_addi_list[$kk] : "";
-//                                                         $this->App->insert('goods_attr',$rtdata);
-//                                                 }
-//                                                 unset($rtdata);
-//                                          }
-//                                          ###########添加商品相册##########
-//                                          if(!empty($photo_gallery_url)&&!empty($isertid)){
-//                                               foreach($photo_gallery_url as $kk=>$url){
-//                                                    if(empty($url)) continue;
-//                                                     $rtdata['img_desc'] = isset($photo_gallery_desc[$kk]) ? $photo_gallery_desc[$kk] : "";
-//                                                     $rtdata['goods_id'] = $isertid;
-//                                                     $rtdata['img_url'] = $url;
-//                                                     $this->App->insert('goods_gallery',$rtdata);
-//                                               }
-//                                               unset($rtdata);
-//                                          }
-//                                          //商品的子分类
-//                                          if(!empty($subcateid)){
-//                                                foreach($subcateid as $ids){
-//                                                    $dd = array();
-//                                                    $dd['goods_id'] = $isertid;
-//                                                    $dd['cat_id'] = $ids;
-//                                                    $this->App->insert('category_sub_goods',$dd);
-//                                                }
-//                                          }
-										 
-// 										 //将关键字添加到goods_keyword表
-// 										 if(!empty($_POST['meta_keys'])){
-// 											$keys = explode(',',$_POST['meta_keys']);
-// 											foreach($keys as $key){
-// 												if(empty($key)) continue;
-// 												$key = trim($key);
-// 												$ds = array();
-// 												$ds['goods_id'] = $isertid;
-// 												$ds['keyword'] = $key;
-// 												$n = Import::basic()->Pinyin($key);
-// 												$ds['p_fix'] = !empty($n) ? ucwords(substr($n,0,1)) : "NAL";
-// 												$this->App->insert('goods_keyword',$ds);
-// 											}
-// 											unset($keys);
-// 										 }
-									 
-// 									 	 //赠品
-// 										 if(!empty($goods_gift_arr)){
-// 											foreach($goods_gift_arr as $tt){
-// 												if(empty($tt)) continue;
-// 												$dd['goods_id'] = $isertid;
-// 												$dd['type'] = $tt;
-// 												$sql = "SELECT gifid FROM `{$this->App->prefix()}goods_gift` WHERE goods_id='$gid' AND type='$tt'";
-// 												$a = $this->App->findvar($sql);
-// 												if(empty($a)){
-// 													$this->App->insert('goods_gift',$dd);
-// 												}
-// 											}
-// 										 }
-										 
-// 										 //会员等级价格添加
-// 										 if(!empty($numberprice)){
-// 											 foreach($numberprice as $ks=>$price){
-// 												if($price > 0){
-// 													$dt = array();
-// 													$dt['goods_id'] = $isertid;
-// 													$dt['user_rank'] = $numberrank[$ks];
-// 													$dt['user_price'] = $price;
-// 													$this->App->insert('goods_user_price',$dt);
-// 												}
-// 											 }
-// 										 }
-										 
-// 										 //添加分类与品牌与商品关联
-// 										 /*if($_POST['cat_id'] > 0 && $_POST['brand_id'] > 0){
-// 											$cid = intval($_POST['cat_id']);
-// 											$bid = intval($_POST['brand_id']);
-// 											//添加
-// 											$this->App->insert('cate_brand_goods',array('cid'=>$cid,'bid'=>$bid,'gid'=>$isertid));
-// 										 }*/
-									 
-//                                          $this->action('system','add_admin_log','添加商品:'.$_POST['goods_name'].'-goods_id:'.$gid);
-//                                          $this->action('common','showdiv',$this->getthisurl());
-//                                 }else{
-//                                         echo '<script> alert("添加失败，添加过程发生意外错误！"); </script>';
-//                                 }
-//                              }
-//                             $rt = $_POST;
-//                         }
-//                  $this->set('type','add');
-// 		}
-		//商品的属性列表
-// 		$sql = "SELECT * FROM `{$this->App->prefix()}attribute` ORDER BY sort_order,attr_id DESC";
-// 		$this->set('attr_list',$this->App->find($sql)); 
-		
-// 		$fn = SYS_PATH.'data/goods_spend_gift.php';
-// 		$spendgift = array();
-// 		if(file_exists($fn) && is_file($fn)){
-// 				include_once($fn);
-// 		}
-// 		$rt['gift_typesd'] = $spendgift;
-// 		unset($spendgift);
-		
-// 		$rt['province'] = $this->action('user','get_regions',1);  //获取省列表
-		
-// 		$this->set('rt',$rt);
-// 		//分类列表
-// 		$this->set('catelist',$this->action('common','get_goods_cate_tree'));
-// 		//品牌列表
-// 		//$sql = "SELECT brand_name,brand_id FROM `{$this->App->prefix()}brand` ORDER BY sort_order ASC, brand_id DESC";
-// 		$this->set('brandlist',$this->action('common','get_brand_cate_tree'));
-// 		//会员等级 
-// 		$this->set('userrank',$this->App->find("SELECT * FROM `{$this->App->prefix()}user_level` WHERE lid!='10'"));
-// 		$userprice = array();
-// 		if($gid > 0){
-// 		$userprice_ =$this->App->find("SELECT user_price,user_rank FROM `{$this->App->prefix()}goods_user_price` WHERE goods_id='$gid'");
-// 		if(!empty($userprice_)){
-// 			foreach($userprice_ as $row){
-// 				$userprice[$row['user_rank']] = $row['user_price'];
-// 			}
-// 			unset($userprice_);
-// 		}
-// 		}
-// 		$this->set('userprice',$userprice);
-		//批发商
-// 		$sql = "SELECT distinct tb1.user_name,tb1.user_id,tb1.nickname FROM `{$this->App->prefix()}user` AS tb1 LEFT JOIN `{$this->App->prefix()}goods` AS tb2 ON tb1.user_id=tb2.uid WHERE tb1.user_rank='10' ORDER BY tb1.user_id DESC";
-// 		$this->set('uidlist',$this->App->find($sql));
-		
-		
-// 		$sql = "SELECT * FROM `{$this->App->prefix()}userconfig` LIMIT 1";
-// 		$this->set('rd',$this->App->findrow($sql));
               if(isset($_POST)&&!empty($_POST)){
-            
-    			if(empty($_POST['gift_stock']) ||  empty($_POST['gift_name']) || empty($_POST['business_id']) || empty($_POST['gift_value']) || empty($_POST['gift_coin']) || empty($_POST['image_url'])){
-    			    
+    			if(empty($_POST['gift_stock']) || empty($_POST['gift_name']) || empty($_POST['business_id']) || empty($_POST['gift_value']) || empty($_POST['gift_coin']) || empty($_POST['image_url'])){
     			    echo'<script>alert("礼物某项数据为空，请重新检查！");</script>';
     			        }
               }
 
-			if( $gid>0 ){//gid大于0，代表是编辑界面
+			if($gid>0){//gid大于0，代表是编辑界面
+			    
                     $this->set('type',"edit");
-    			  
     			    $this->App->update('gift',$_POST,'gift_id',$gid);
-                
+
             }else{//gid不大于0，代表是添加界面
-                    $this->set('type',"add");
-                                
+                
+                    $this->set('type',"add");       
                     $this->App->insert('gift',$_POST);
             }
             
@@ -952,7 +497,7 @@ class GoodsController extends Controller{
 			$rt = $this->App->findrow($sql);
 			$this->set('rt',$rt);
 		    $this->template('goods_info');
-
+		    
 	}
 
 	//消费额度赠品管理
@@ -1500,34 +1045,36 @@ class GoodsController extends Controller{
 	function ajax_cate_dels($ids=0){
 		if(empty($ids)) die("非法删除，删除ID为空！");
 		$id_arr = @explode('+',$ids);
-		@set_time_limit(300); //最大运行时间
-		foreach($id_arr as $id){
-			$getid = $this->action('common','get_goods_sub_cat_ids',$id); //子分类
-			if(!empty($getid)){
-				foreach($getid as $id){
-				   //删除数据库信息
-                                    //非法ID不允许删除
-                                    if(Import::basic()->int_preg($id)){
-                                            //删除分类下的商品
-                                            //$this->App->delete('goods','cat_id',$id);
-                                            //删除指定分类
-                                            $this->App->delete('goods_cate','cat_id',$id);
-                                            //删除商品评论
-                                            $cids = $this->action('common','get_goods_sub_cat_ids',$id);
-                                            $gids = $this->App->findcol("SELECT goods_id FROM `{$this->App->prefix()}goods` WHERE cat_id IN(".implode(',',$cids).")");
-                                            if(!empty($gids)){
-                                                //$sql = "DELETE FROM `{$this->App->prefix()}comment` WHERE id_value IN(".implode(',',$gids).")";
-                                                //$this->App->query($sql);
-												$this->ajax_delgoods($gids);
-                                            }
+// 		@set_time_limit(300); //最大运行时间
+// 		foreach($id_arr as $id){
+// 			$getid = $this->action('common','get_goods_sub_cat_ids',$id); //子分类
+// 			if(!empty($getid)){
+// 				foreach($getid as $id){
+// 				   //删除数据库信息
+//                                     //非法ID不允许删除
+//                                     if(Import::basic()->int_preg($id)){
+//                                             //删除分类下的商品
+//                                             //$this->App->delete('goods','cat_id',$id);
+//                                             //删除指定分类
+//                                             $this->App->delete('goods_cate','cat_id',$id);
+//                                             //删除商品评论
+//                                             $cids = $this->action('common','get_goods_sub_cat_ids',$id);
+//                                             $gids = $this->App->findcol("SELECT goods_id FROM `{$this->App->prefix()}goods` WHERE cat_id IN(".implode(',',$cids).")");
+//                                             if(!empty($gids)){
+//                                                 //$sql = "DELETE FROM `{$this->App->prefix()}comment` WHERE id_value IN(".implode(',',$gids).")";
+//                                                 //$this->App->query($sql);
+// 												$this->ajax_delgoods($gids);
+//                                             }
 
-                                    }
-				}
-			}
-		}//end foreach
+//                                     }
+// 				}
+// 			}
+// 		}//end foreach
 				
-		$this->action('system','add_admin_log','删除商品分类:ID为=>'.@implode(',',$id_arr));
-                unset($id_arr);
+// 		$this->action('system','add_admin_log','删除商品分类:ID为=>'.@implode(',',$id_arr));
+//                 unset($id_arr);
+        
+	    $this->App->delete('business','business_id',$id_arr);
 	}
 
     //ajax激活操作
@@ -2273,9 +1820,7 @@ class GoodsController extends Controller{
 	    
 	    $this->set('businesslist',$businesslist);
 	    $this->template('business_list');
-	    
-        echo "<pre>";
-        print_r($businesslist);
+
 	}
 
 	
@@ -2284,11 +1829,21 @@ class GoodsController extends Controller{
 	 * @param unknown $gift_id
 	 * @return unknown
 	 */
-	function get_gift_incept($gift_id){
-	    
+	function ajax_get_giftincept(){
+	    $gift_id = $_POST['id'];
+
+	    if( isset($_POST['sign']) ){
+	        
+	       $sql = " SELECT SUM(gift_incept) FROM {$this->App->prefix()}gift WHERE business_id = (SELECT business_id FROM gz_business WHERE business_name = '$gift_id')";
+	       $result = $this->App->findvar($sql);
+	       echo $result;
+	       
+	    }else{
+	        
 	    $sql = " SELECT gift_incept FROM {$this->App->prefix()}gift WHERE gift_id = $gift_id";
 	    $result = $this->App->findvar($sql);
-	    return $result;
+           echo $result;
+	    }
 	}
 	
 	function get_business_incept_sum($business_id){
@@ -2298,12 +1853,26 @@ class GoodsController extends Controller{
 	    return $result;
 	}
 	
+	function businessinfo(){
+	    
+// 	    isset($_POST)
+
+	    $id = $_GET['id'];
+	    $sql = " SELECT business_name FROM {$this->App->prefix()}business WHERE business_id = '$id'";
+	    $business_info = $this->App->find($sql);
+	    
+	    $sql = " SELECT gift_incept, gift_id, gift_name FROM {$this->App->prefix()}business WHERE business_id = '$id'";
+	    $gift_info = "";
+	    
+// 	    echo "<pre>";
+// 	    var_dump($result);
+	    
+	    $this->set('businessinfo',$businessinfo);
+	    $this->template('business_info');
+	    
+	}
+	
 }
-
-
-
-
-
 
 
 

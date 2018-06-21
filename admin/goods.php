@@ -3,6 +3,9 @@ require_once("load.php");
 
 if($_POST['action']){
 	switch($_POST['action']){
+	    case 'get_giftincept':
+	        $app->action('goods','ajax_get_giftincept',$_POST);
+	        break;
 		case 'brand_dels':
 			$app->action('goods','ajax_brand_dels',$_POST['ids']);
 			break;
@@ -96,6 +99,9 @@ switch($type){
 	case 'goods_list': 
 		$app->action('goods','goods_list');
 		break;
+	case 'business_info':
+	    $app->action('goods','businessinfo',(isset($_GET['id']) ? $_GET['id'] : 0));
+	    break;
 	case 'goods_list_check':
 		$app->action('goods','goods_list_check');
 		break;
