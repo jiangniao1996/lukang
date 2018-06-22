@@ -1,8 +1,8 @@
-<div class="contentbox">
 <style type="text/css">
 .order_basic table td{ border:1px solid #F4F6F1; }
 .order_basic td p{background:#F5F7F2; text-align:center; line-height:25px; font-size:13px; font-weight:bold; margin-bottom:0px; margin-top:0px}
 </style>
+<div class="contentbox">
 <div class="openwindow"><img src="<?php echo $this->img('loading.gif');?>"  align="absmiddle"/><br />正在操作，请稍后。。。</div>
 <table cellspacing="2" cellpadding="5" width="100%" class="order_basic">
 	 <tr>
@@ -49,24 +49,10 @@
 			</tr>
 			<tr>
 				<td class="label" width="15%"><?php echo $rt['orderinfo']['shipping_id']=='6' ? '提货店址' : '收货地址';?>：</td>
-				<!-- <td width="35%"><?php echo $rt['orderinfo']['province'].' '.$rt['orderinfo']['city'].' '.$rt['orderinfo']['district'].' '.$rt['orderinfo']['town'].' '.$rt['orderinfo']['village'].' '.($rt['orderinfo']['shipping_id']=='6' ? $rt['orderinfo']['user_name'] : $rt['orderinfo']['address']);?></td> -->
 				<td width="35%"><?php echo $rt['orderinfo']['delivery_address'];?></td>
-<!-- 				<td class="label" width="15%">邮编：</td> -->
-<!--				<td width="35%"><?php echo $rt['orderinfo']['zipcode'];?></td> -->
 				<td class="label" width="15%">电话|手机：</td>
 				<td width="35%"><?php echo $rt['orderinfo']['delivery_phone'];?><?php echo $rt['orderinfo']['mobile'];?></td>
 			</tr>
-			<tr>
-<!-- 				<td class="label" width="15%">要求送货时间：</td -->
-<!--				<td width="35%"><?php echo !empty($rt['orderinfo']['best_time']) ? $rt['orderinfo']['best_time'] : '无说明';?></td> -->
-			</tr>
-			
-			<!--<tr>
-				<td class="label" width="15%">标志性建筑：</td>
-				<td width="35%"><?php echo $rt['orderinfo']['sign_building'];?></td>
-				<td class="label" width="15%">&nbsp;</td>
-				<td width="35%">&nbsp;</td>
-			</tr>-->
 		</table>
 		</td>
 	</tr>
@@ -81,32 +67,18 @@
 			<tr align="center" >
 				<td ><strong>礼物ID</strong></td>
 				<td ><strong>礼物名称</strong></td>
-<!-- 			<td ><strong>规格</strong></td> -->
-<!-- 			<td ><strong>单位</strong></td> -->
 				<td><strong>数量</strong></td>
-<!-- 			<td ><strong>单价</strong></td> -->
-<!-- 			<td ><strong>库存</strong></td> -->
-<!-- 			<td><strong>金额</strong></td> -->
 			</tr>
 			<?php if(!empty($rt['ordergoods'])){
-			foreach($rt['ordergoods'] as $row){ 
-			
+			         foreach($rt['ordergoods'] as $row){ 
 			?>
 			<tr align="center">
 				<td><?php echo $row['gift_id'];?></td>
 				<td><?php echo $row['gift_name'];?></td>
 				<td><?php echo $row['gift_num'];?></td>
-				<td><a href="<?php echo SITE_URL;?>goods.php?id=<?php echo $row['goods_id'];?>" target="_blank"><?php echo $row['goods_name'].(!empty($row['brand_name']) ? '['.$row['brand_name'].']' : '').'</a>'.(!empty($row['buy_more_best']) ? '<br /><em>实行<font style="color:#FE0000;font-weight:bold">['.$row['buy_more_best'].']</font>促销活动！</em>' : '');?></a></td>
-				<!-- <td><?php echo $row['goods_unit'];?></td> -->
-				<!-- <td><?php echo $row['goods_price'];?></td> -->
-				<!-- <td><?php echo $row['storage'];?></td> -->
-				<!-- <td><?php echo '￥'.(!empty($row['goods_price'])? $row['goods_price'] : $row['market_price'])*$row['goods_number'];?></td> -->
-				
+				<td><a href="<?php echo SITE_URL;?>goods.php?id=<?php echo $row['goods_id'];?>" target="_blank"><?php echo $row['goods_name'].(!empty($row['brand_name']) ? '['.$row['brand_name'].']' : '').'</a>'.(!empty($row['buy_more_best']) ? '<br /><em>实行<font style="color:#FE0000;font-weight:bold">['.$row['buy_more_best'].']</font>促销活动！</em>' : '');?></a></td>				
 			</tr>
 			<?php } ?>
-<!-- 			<tr align="center"> -->
-				<!-- <td colspan="7" align="right">总价:</td><td><?php echo '￥'.$totalprice;?></td> -->
-<!-- 			</tr> -->
 			<?php }  ?>
 		</table>
 		</td>
@@ -158,7 +130,7 @@
 <?php  $thisurl = ADMIN_URL.'goods_order.php'; ?>
 
 <script type="text/javascript">
-<!--
+
 /*$.ajax({
    type: "POST",
    url: "<?php echo $thisurl;?>",
@@ -176,7 +148,7 @@
    }
 }); //end ajax
 */
--->
+
 
 $('.order_action').live('click',function(){
 	createwindow();
@@ -184,7 +156,8 @@ $('.order_action').live('click',function(){
 	
 	opremark = $("textarea[name='action_note']").val();
 	
-	id = '<?php echo $_REQUEST['id']?>';
+	id = '<?php echo $_REQUEST['id'];?>';
+	console.log(id);
 //	order_id = '<?php echo $rt['orderinfo']['order_id'];?>';
 	
 	$.post('<?php echo $thisurl;?>',{action:'op_status',opstatus:opstatus,opremark:opremark,opid:id},function(data){

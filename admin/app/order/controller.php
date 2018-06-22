@@ -315,28 +315,6 @@ class OrderController extends Controller{
 	
 	//订单详情信息
 	function order_info($id=0){
-//             if(empty($id)) { $this->jump('goods_order.php?type=order_list',0,'订单ID为空！'); exit;}
-// 			$sql = "SELECT tb1.*,tb2.region_name AS province,tb3.region_name AS city,tb5.user_name,tb4.region_name AS district,tb6.region_name AS town ,tb7.region_name AS village FROM `{$this->App->prefix()}goods_order_info` AS tb1"; // look添加tb5.user_name
-// 			$sql .=" LEFT JOIN `{$this->App->prefix()}region` AS tb2 ON tb2.region_id = tb1.province";
-// 			$sql .=" LEFT JOIN `{$this->App->prefix()}region` AS tb3 ON tb3.region_id = tb1.city";
-// 			$sql .=" LEFT JOIN `{$this->App->prefix()}region` AS tb4 ON tb4.region_id = tb1.district";
-// 			$sql .=" LEFT JOIN `{$this->App->prefix()}region` AS tb6 ON tb6.region_id = tb1.town";
-// 			$sql .=" LEFT JOIN `{$this->App->prefix()}region` AS tb7 ON tb7.region_id = tb1.village";
-// 			$sql .=" LEFT JOIN `{$this->App->prefix()}user` AS tb5 ON tb5.user_id = tb1.shop_id"; // look添加
-// 			$sql .=" WHERE tb1.order_id='$id'";
-// 			$rt['orderinfo'] = $this->App->findrow($sql);
-//             if(empty($rt['orderinfo'])) { $this->jump('goods_order.php?type=order_list',0,'信息为空！'); exit;}
-// 			$isview = $rt['orderinfo']['is_view'];
-// 			if($isview=='0'){
-// 				$this->App->update('goods_order_info',array('is_view'=>'1'),'order_id',$id);
-// 			}
-//             $rt['orderinfo']['status'] = $this->get_status($rt['orderinfo']['order_status'],$rt['orderinfo']['pay_status'],$rt['orderinfo']['shipping_status']);
-			
-//             $sql = "SELECT tb1.*,tb2.goods_thumb,tb2.goods_unit,tb2.goods_brief,tb2.goods_number AS storage,tb2.goods_id, IFNULL(tb3.brand_name, '') AS brand_name FROM `{$this->App->prefix()}goods_order` AS tb1";  //look 添加
-// 			$sql .= " LEFT JOIN `{$this->App->prefix()}goods` AS tb2 ON tb1.goods_id = tb2.goods_id";
-// 			$sql .= " LEFT JOIN `{$this->App->prefix()}brand` AS tb3 ON tb2.brand_id = tb3.brand_id";
-// 			$sql .= " WHERE tb1.order_id = '$id'";
-// 			$rt['ordergoods']= $this->App->find($sql);
 
 	    
             $sql = "select gift_id from `{$this->App->prefix()}order_info` where order_id = $id";
@@ -352,9 +330,7 @@ class OrderController extends Controller{
 	        if (empty($rt['orderinfo'])) { $this->jump('goods_order.php?type=order_list',0,'信息为空！'); exit;}
 	        $rt['orderinfo']['state'] = $this->get_status($rt['orderinfo']['state']);
 	        
-		    
-		    
-
+	        
 			//订单操作信息
 			$sql = "SELECT * FROM `{$this->App->prefix()}goods_order_action` WHERE order_id='$id' ORDER BY log_time DESC";
 			$rs = $this->App->find($sql);

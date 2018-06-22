@@ -1856,7 +1856,7 @@ class GoodsController extends Controller{
 	function businessinfo(){
 	    
 // 	    isset($_POST)
-
+	    //SELECT * FROM gz_business AS tb1 LEFT JOIN gz_gift AS tb2 ON tb1.business_id = tb2.business_id WHERE tb1.business_id =1
 	    $id = $_GET['id'];
 	    $sql = " SELECT business_name FROM {$this->App->prefix()}business WHERE business_id = '$id'";
 	    $business_info = $this->App->find($sql);
