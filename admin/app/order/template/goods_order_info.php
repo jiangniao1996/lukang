@@ -28,30 +28,6 @@
 				<td class="label" width="15%">物流单号:</td>
 				<td width="35%"><input id="sn_id" type="text" value="<?php echo !empty($rt['orderinfo']['sn_id']) ? $rt['orderinfo']['sn_id'] : '未发货'?>" onblur="setSnid(this.value)"></td>
 			</tr>
-			<tr>
-<!-- 				<td class="label" width="15%">支付方式：</td> -->
-<!-- 				<td width="35%"><?php echo $rt['orderinfo']['pay_name'];?></td> -->
-<!-- 				<td class="label" width="15%">付款时间：</td> -->
-<!-- 				<td width="35%"><?php echo !empty($rt['orderinfo']['shipping_time']) ? date('Y-m-d H:i:s',$rt['orderinfo']['shipping_time']) : '未知';?></td> -->
-			</tr>
-			<tr>
-<!-- 				<td class="label" width="15%">电子邮件：</td> -->
-				<!-- <td width="35%"><?php echo $rt['userinfo']['email'];?></td>-->
-<!-- 				<td class="label" width="15%">发货时间：</td> -->
-				<!-- <td width="35%"><?php echo !empty($rt['orderinfo']['shipping_time']) ? date('Y-m-d H:i:s',$rt['orderinfo']['shipping_time']) : '未知';?></td>-->
-			</tr>
-			<tr> 
-				<!-- <td class="label" width="15%">订单附言：</td> -->
-				<!-- <td ><?php echo $rt['orderinfo']['postscript'];?></td> -->
-<!-- 				<td class="label" width="15%">缺货说明：</td> -->
-<!-- 					<td ><?php echo $rt['orderinfo']['how_oos'];?></td> -->
-			</tr>
-			<tr> 
-<!-- 				<td class="label" width="15%">邮费：</td> -->
-				<!-- <td >￥<?php echo $rt['orderinfo']['shipping_fee'];?></td> -->
-<!-- 				<td class="label" width="15%">产品总价：</td> -->
-				<!-- <td >￥<?php echo $rt['orderinfo']['goods_amount'];?></td> -->
-			</tr>
 		</table>
 		</td>
 	</tr>
@@ -65,7 +41,7 @@
 		<table cellspacing="0" cellpadding="0" width="100%" class="order_basic">
 			<tr>
 				<td class="label" width="15%">收货人：</td>
-				<td width="35%"><a href="user.php?type=userress&id=<?php echo $rt['orderinfo']['user_id'];?>" style="color:#FE0000" title="查看详情"><?php echo $rt['orderinfo']['delivery_name'];?></a><em>[点击可进入收货人详情]</em></td>
+				<td width="35%"><a href="user.php?type=userress&id=<?php echo $rt['orderinfo']['user_id'];?>" style="color:#FE0000" title="查看详情"><?php echo $rt['orderinfo']['delivery_name'];?></a></td>
 				
 				<td class="label" width="15%">货运贴士：</td>
 				<!-- <td width="35%"><?php echo $rt['orderinfo']['shipping_name'];?></td> -->
@@ -96,7 +72,7 @@
 	</tr>
 	<tr>
 		<td>
-		<p>信息信息</p>
+		<p>礼物信息</p>
 		</td>
 	</tr>
 	<tr>
@@ -113,15 +89,14 @@
 <!-- 			<td><strong>金额</strong></td> -->
 			</tr>
 			<?php if(!empty($rt['ordergoods'])){
-			$totalprice = 0;
 			foreach($rt['ordergoods'] as $row){ 
-			$totalprice += (!empty($row['goods_price'])? $row['goods_price'] : $row['market_price'])*$row['goods_number'];
+			
 			?>
 			<tr align="center">
 				<td><?php echo $row['gift_id'];?></td>
 				<td><?php echo $row['gift_name'];?></td>
 				<td><?php echo $row['gift_num'];?></td>
-				<td><a href="<?php echo SITE_URL;?>goods.php?id=<?php echo $row['goods_id'];?>" target="_blank"><?php echo $row['goods_name'].(!empty($row['brand_name']) ? '['.$row['brand_name'].']' : '').'</a>'.(!empty($row['buy_more_best']) ? '<br /><em>实行<font style="color:#FE0000;font-weight:bold">['.$row['buy_more_best'].']</font>促销活动！</em>' : '');?></td>
+				<td><a href="<?php echo SITE_URL;?>goods.php?id=<?php echo $row['goods_id'];?>" target="_blank"><?php echo $row['goods_name'].(!empty($row['brand_name']) ? '['.$row['brand_name'].']' : '').'</a>'.(!empty($row['buy_more_best']) ? '<br /><em>实行<font style="color:#FE0000;font-weight:bold">['.$row['buy_more_best'].']</font>促销活动！</em>' : '');?></a></td>
 				<!-- <td><?php echo $row['goods_unit'];?></td> -->
 				<!-- <td><?php echo $row['goods_price'];?></td> -->
 				<!-- <td><?php echo $row['storage'];?></td> -->

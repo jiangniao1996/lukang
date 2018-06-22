@@ -337,9 +337,10 @@ class OrderController extends Controller{
 // 			$sql .= " LEFT JOIN `{$this->App->prefix()}brand` AS tb3 ON tb2.brand_id = tb3.brand_id";
 // 			$sql .= " WHERE tb1.order_id = '$id'";
 // 			$rt['ordergoods']= $this->App->find($sql);
+
+	    
             $sql = "select gift_id from `{$this->App->prefix()}order_info` where order_id = $id";
             $rt['ordergoods'] = $this->App->find($sql);
-            
             $rt['ordergoods'] = $this->get_giftinfo($rt['ordergoods'][0]['gift_id']);
 
             
@@ -353,11 +354,7 @@ class OrderController extends Controller{
 	        
 		    
 		    
-		    
-		    
-		    
-		    
-		    
+
 			//订单操作信息
 			$sql = "SELECT * FROM `{$this->App->prefix()}goods_order_action` WHERE order_id='$id' ORDER BY log_time DESC";
 			$rs = $this->App->find($sql);
@@ -366,7 +363,7 @@ class OrderController extends Controller{
 				foreach($rs as $k=>$row){
 				    $rt['action_info'][$k] = $row;
 					$rt['action_info'][$k]['status']=  $this->get_status($row['order_status'],$row['pay_status'],$row['shipping_status']);
-					$rt['action_info'][$k]['log_time'] = !empty($row['log_time']) ? date('Y-m-d H:i:s',$row['log_time']) : '无知';
+					$rt['action_info'][$k]['log_time'] = !empty($row['log_time']) ? date('Y-m-d H:i:s',$row['log_time']) : '未知';
 					$os = $this->get_status($row['order_status'],'tt','tt');
 					$rt['action_info'][$k]['order_status'] = !empty($os) ? str_replace(',','',$os) : "";
 					$ss = $this->get_status('tt','tt',$row['shipping_status']);
@@ -1964,7 +1961,7 @@ class OrderController extends Controller{
 		    $name_arr = array();
 		    for( $i=0; $i<=$length-1; $i++){
 		        
-		        $sql = "select gift_name from gift where gift_id = $ids[$i]";
+		        $sql = "select gift_name from {$this->App->prefix()}gift where gift_id = $ids[$i]";
 		        $res = $this->App->findrow($sql);
 		        $name_arr[$i] = $res['gift_name'];
 		    }

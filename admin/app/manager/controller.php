@@ -95,7 +95,7 @@ class ManagerController extends Controller
 		if (empty($page)) {
 			$page = 1;
 		}
-		$list = 10;
+		$list = 20;
 		$start = ($page - 1) * $list;
 		$sql = "SELECT COUNT(gid) FROM `{$this->App->prefix()}adminlog` {$w}";
 		$tt = $this->App->findvar($sql);
