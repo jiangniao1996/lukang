@@ -1,6 +1,4 @@
 <?php
- use PhpMyAdmin\Server\Status\Variables;
-
  /*
  * 这是一个后台产品处理类
  */

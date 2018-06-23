@@ -75,9 +75,9 @@ $menu[6] = array(
 );
 
 
-$menu[10] = array(
-	'en_name'=>'10',
-	'big_key'=>'s05',
+$menu[12] = array(
+	'en_name'=>'12',
+	'big_key'=>'s09',
 	'big_mod'=>'礼物大全',
 	'small_mod'=>'礼物管理',
 	'sub_mod'=>array(
@@ -87,12 +87,12 @@ $menu[10] = array(
 		//array('name'=>'商品转移','en_name'=>'1023','url'=>'goods.php?type=zhuanyi'),
 		//array('name'=>'已审核商品','en_name'=>'1023','url'=>'goods.php?type=goods_list_check&sale=yes'),
 		//array('name'=>'待审核商品','en_name'=>'1021','url'=>'goods.php?type=goods_list_check&sale=no'),
-		array('name'=>'我的回收站','en_name'=>'1004','url'=>'goods.php?type=goods_list_all'),
+		// array('name'=>'我的回收站','en_name'=>'1004','url'=>'goods.php?type=goods_list_all'),
 		//array('name'=>'添加商品','en_name'=>'1004','url'=>'goods.php?type=goods_info'),
 		//array('name'=>'批量传图','en_name'=>'1005','url'=>'goods.php?type=batch_add'),
 		//array('name'=>'批量上传','en_name'=>'1006','url'=>'goods.php?type=batch_add_text'),
 		array('name'=>'商家列表','en_name'=>'1007','url'=>'goods.php?type=business_list'),
-		array('name'=>'添加分类','en_name'=>'1008','url'=>'goods.php?type=cate_info'),
+		// array('name'=>'添加分类','en_name'=>'1008','url'=>'goods.php?type=cate_info'),
 	)
 );
 
@@ -135,8 +135,8 @@ $menu[16] = array(
 	'big_mod'=>'游戏详情',
 	'small_mod'=>'游戏功能',
 	'sub_mod'=>array(
-		array('name'=>'游戏设置','en_name'=>'1601','url'=>'ads.php?type=adslist'),
-		array('name'=>'添加游戏','en_name'=>'1604','url'=>'ads.php?type=ads_add')
+		array('name'=>'游戏设置','en_name'=>'1601','url'=>'game.php?type=adslist'),
+		array('name'=>'添加游戏','en_name'=>'1604','url'=>'game.php?type=ads_add')
 // 		array('name'=>'广告标签','en_name'=>'1602','url'=>'ads.php?type=adstaglist'),
 // 		array('name'=>'添加标签','en_name'=>'1603','url'=>'ads.php?type=adstag_add')
 	)

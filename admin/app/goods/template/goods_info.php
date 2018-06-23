@@ -69,7 +69,7 @@ h2.nav a{ color:#999999; display:block; float:left; height:24px;width:113px; tex
 		  
 	 </table>
 	  <p style="text-align:center;">
-		<input class="new_save" value="<?php echo $type=='edit' ? '修改' : '添加';?>保存" type="Submit" style="cursor:pointer" />&nbsp;
+		<input class="new_save" value="保存<?php echo $type=='edit' ? '修改' : '添加';?>" type="Submit" style="cursor:pointer" />&nbsp;
 	  </p>
 	  <div style="clear:both"></div>
  </div>

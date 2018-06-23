@@ -53,7 +53,7 @@ $type = isset($_GET['type']) ? $_GET['type'] : "adslist";
 
 switch($type){
 	case 'adslist': //广告列表
-		$app->action('ads','adslist');
+		$app->action('game','adslist');
 		break;
 	case 'adstaglist': //广告标签列表
 		$app->action('ads','adstaglist');
@@ -66,9 +66,8 @@ switch($type){
 	case 'ads_edit': //编辑广告
 		$app->action('ads','ads_info',$type,($_GET['id'] ?  $_GET['id'] : 0));
 		break;
-	default:
-	   $app->action('ads','adslist');
+	$app->action('game','adslist');
 	   break;
-}
+	}
 
-?>
+	?>
