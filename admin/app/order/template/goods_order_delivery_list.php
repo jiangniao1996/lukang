@@ -199,6 +199,7 @@ $dt = $thisurl.'?type=list&tt=delivery&status=222&asc=TIMESTAMP';
 	
 	function ajax_change_shopping(obj){
 		vv = $(obj).val();
+		console.log(vv);
 		if(vv!="0"){
 			$(obj).parent().find('.vieworder').show();
 		}else{
@@ -210,6 +211,7 @@ $dt = $thisurl.'?type=list&tt=delivery&status=222&asc=TIMESTAMP';
 	function edit_2012127(object){
 		thisvar = $(object).html()
 		ids = $(object).attr('id');//订单ID
+		console.log(ids);
 		sid = $(object).parent().find('select[name="shopping_id"]').val();
 		if(!(sid>0)){
 			alert("请选择配送物流");

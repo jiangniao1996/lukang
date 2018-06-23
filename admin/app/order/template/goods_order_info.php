@@ -25,7 +25,15 @@
 			<tr>
 				<td class="label" width="15%">下单时间：</td>
 				<td width="35%"><?php echo !empty($rt['orderinfo']['TIMESTAMP']) ? date('Y-m-d H:i:s',$rt['orderinfo']['TIMESTAMP']) : '未知';?></td>
-				<td class="label" width="15%">物流单号:</td>
+				<td class="label" width="15%">物流信息:</td>
+				<td>
+				<select name="shopping_id" id="shopping_id">
+            	<option value="0">选择物流</option>
+            	<?php if(!empty($shoppinglist))foreach($shoppinglist as $item){?>
+            	<option value="<?php echo $item['shipping_id'];?>"<?php if($item['shipping_id']==$rt['orderinfo']['shipping_id_true']){ echo ' selected="selected"';} ?>><?php echo $item['shipping_name'];?></option>
+            	<?php } ?>
+            	</select>
+            	</td>
 				<td width="35%"><input id="sn_id" type="text" value="<?php echo !empty($rt['orderinfo']['sn_id']) ? $rt['orderinfo']['sn_id'] : '未发货'?>" onblur="setSnid(this.value)"></td>
 			</tr>
 		</table>
@@ -91,14 +99,14 @@
 	<tr>
 		<td>
 		<table cellspacing="0" cellpadding="0" width="100%">
-		<tr>
-			<td width="15%">		
-			<strong>操作备注:</strong>
-			</td>
-			<td>
-			<textarea name="action_note" cols="80" rows="3"></textarea>
-			</td>
-		</tr>
+<!-- 		<tr> -->
+<!-- 			<td width="15%">		 -->
+<!-- 			<strong>操作备注:</strong> -->
+<!-- 			</td> -->
+<!-- 			<td> -->
+<!-- 			<textarea name="action_note" cols="80" rows="3"></textarea> -->
+<!-- 			</td> -->
+<!-- 		</tr> -->
 		<tr>
 			<td width="15%"><strong>当前可执行操作:</strong></td>
 			<td id="get_button">
@@ -153,11 +161,11 @@
 $('.order_action').live('click',function(){
 	createwindow();
 	opstatus = $(this).attr('id');
-	
+
 	opremark = $("textarea[name='action_note']").val();
 	
-	id = '<?php echo $_REQUEST['id'];?>';
-	console.log(id);
+	id = '<?php echo $_REQUEST['id'];?>';//订单号
+
 //	order_id = '<?php echo $rt['orderinfo']['order_id'];?>';
 	
 	$.post('<?php echo $thisurl;?>',{action:'op_status',opstatus:opstatus,opremark:opremark,opid:id},function(data){
@@ -183,9 +191,10 @@ $('.order_action').live('click',function(){
 function setSnid(sn_id){
 
 	o_id = document.getElementById("order_id").innerText;
-
+	var ship_id = document.getElementById("shopping_id").value;
 	
-	$.post('<?php echo $thisurl;?>',{action:'updatesnid',order_id:o_id,sn_id:sn_id});
+	
+	$.post('<?php echo $thisurl;?>',{action:'updatesnid',order_id:o_id,sn_id:sn_id,ship_id:ship_id});
 }
 
 

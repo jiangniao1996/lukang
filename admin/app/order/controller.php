@@ -315,7 +315,8 @@ class OrderController extends Controller{
 	
 	//订单详情信息
 	function order_info($id=0){
-
+    	    $shoppinglist = $this->App->find("SELECT * FROM `{$this->App->prefix()}shipping_name`");
+    	    $this->set('shoppinglist',$shoppinglist);
 	    
             $sql = "select gift_id from `{$this->App->prefix()}order_info` where order_id = $id";
             $rt['ordergoods'] = $this->App->find($sql);
@@ -323,13 +324,12 @@ class OrderController extends Controller{
 
             
 //  			$rt['order_action_button'] = $this->get_order_action_button($rt['orderinfo']['order_status'],$rt['orderinfo']['pay_status'],$rt['orderinfo']['shipping_status']); //返回订单操作按钮
- 			$rt['order_action_button'] = $this->get_order_action_button($rt['orderinfo']['order_status']); //返回订单操作按钮
-		    if(empty($id)) { $this->jump('goods_order.php?type=order_list',0,'订单ID为空');exit;}
-		    $sql = "select order_id,delivery_name, delivery_phone, delivery_tips, user_id, delivery_address, state, TIMESTAMP, gift_id, sn_id from `{$this->App->prefix()}order_info` where order_id = $id";
+		    $sql = "select order_id,delivery_name, delivery_phone, delivery_tips, user_id, delivery_address, state, shipping_id_true, TIMESTAMP, gift_id, sn_id from `{$this->App->prefix()}order_info` where order_id = $id";
 	        $rt['orderinfo'] = $this->App->findrow($sql);
+ 			$rt['order_action_button'] = $this->get_order_action_button($rt['orderinfo']['state']); //返回订单操作按钮
+		    if(empty($id)) { $this->jump('goods_order.php?type=order_list',0,'订单ID为空');exit;}
 	        if (empty($rt['orderinfo'])) { $this->jump('goods_order.php?type=order_list',0,'信息为空！'); exit;}
 	        $rt['orderinfo']['state'] = $this->get_status($rt['orderinfo']['state']);
-	        
 	        
 			//订单操作信息
 			$sql = "SELECT * FROM `{$this->App->prefix()}goods_order_action` WHERE order_id='$id' ORDER BY log_time DESC";
@@ -394,7 +394,7 @@ class OrderController extends Controller{
                     $str .= '未发货';
                     break;
                 case '1':
-                    $str .= '配货中';
+                    $str .= '已发货';
                     break;
                 case '2':
                     $str .= '已发货';
@@ -509,17 +509,21 @@ class OrderController extends Controller{
 		}
 		*/
 // 		function get_order_action_button($order_status=0,$pay_status=0,$shipping_status=0){
-		function get_order_action_button($order_status=0){
-		    
+		function get_order_action_button($order_status=0,$edit_sign=0){
+// 		    var_dump($order_status);
 			$str = "";
-			if($order_status==0){ 	//没确认(没付款、没发货)
+			if(isset($order_status)){ 	//没确认(没付款、没发货)
 				$str .= '<input value="设置为未发货" class="order_action" type="button" id="0">'."\n";
 				$str .= '<input value="设置为已发货" class="order_action" type="button" id="1">'."\n";
 // 				$str .= '<input value="付款" class="order_action" type="button" id="210">'."\n";
 // 				$str .= '<input value="取消" class="order_action" type="button" id="100">'."\n";
 // 				$str .= '<input value="无效" class="order_action" type="button" id="400">'."\n";
 				
-			}else if($order_status==2){   //已经确认
+			if($edit_sign==2){   //已经确认
+			    
+			    //$str .= '<input value="保存" class="order_action" type="button" id="2">'."\n";
+			    
+			    
 // 			    if($pay_status==0){ //没支付
 // 					$s2 = '0';
 // 					if($pay_status=='1') $s = '1'; else $s = '0';
@@ -592,6 +596,7 @@ class OrderController extends Controller{
 // 			else if($order_status==7){ //同意退货
 // 			     $str .= '<input value="确认" class="order_action" type="button" id="200">'."\n";
 // 				$str .= '<input value="移除" class="order_action" type="button" id="remove">'."\n";
+			         }
      			}
 			return $str;
 		}
@@ -1309,14 +1314,14 @@ class OrderController extends Controller{
 	
 	//获取操作状态按钮
 	function ajax_get_status_button($var=0){
-			if(strlen($var) != 3) return;
+// 			if(strlen($var) != 3) return;
 			
 			$order_status = substr($var,0,1);
-			$pay_status = substr($var,1,1);
-			$shipping_status = substr($var,-1);
-			
-			$str = $this->get_order_action_button($order_status,$pay_status,$shipping_status);
-// 			die($str);
+// 			$pay_status = substr($var,1,1);
+// 			$shipping_status = substr($var,-1);
+
+			$str = $this->get_order_action_button($order_status,$edit_sign);
+			die($str);
 	}
 		
         //ajax 处理订单状态
@@ -1980,9 +1985,10 @@ class OrderController extends Controller{
 		function UpdateSnid(){
 		    
 		   $order_id = $_POST['order_id'];
-		   $sn_id = $_POST['sn_id'];	   
+		   $sn_id = $_POST['sn_id'];
+		   $shipping_id_true = $_POST['ship_id'];
 		   
-		   $result = $this->App->update('order_info', array('sn_id' => $sn_id), 'order_id', $order_id);
+		   $result = $this->App->update('order_info', array('sn_id' => $sn_id,'shipping_id_true' => $shipping_id_true), 'order_id', $order_id);
 
 		}
 		
